@@ -27,6 +27,7 @@ public interface TestInterfaceUtente {
 			System.out.println("6. Elimina una pizza dal menu. "); 
 			
 			int choice = scanner.nextInt(); 
+			scanner.useDelimiter("\n");
 			scanner.nextLine(); 
 			
 			PizzaService pizzaServiceInstance = MyServiceFactory.getPizza_service_instance(); 

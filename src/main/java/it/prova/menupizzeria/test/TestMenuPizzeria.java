@@ -1,13 +1,17 @@
 package it.prova.menupizzeria.test;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import it.prova.menupizzeria.dao.EntityManagerUtil;
+import it.prova.menupizzeria.dao.IngredienteDAO;
+import it.prova.menupizzeria.dao.IngredienteDAOImpl;
 import it.prova.menupizzeria.model.Ingrediente;
 import it.prova.menupizzeria.model.Pizza;
 import it.prova.menupizzeria.service.IngredienteService;
+import it.prova.menupizzeria.service.IngredienteServiceImpl;
 import it.prova.menupizzeria.service.MyServiceFactory;
 import it.prova.menupizzeria.service.PizzaService;
 import it.prova.menupizzeria.utils.Utils;
@@ -24,7 +28,7 @@ public class TestMenuPizzeria {
 
 		try { 
 			
-			getUnaPizza(pizzaServiceInstance, "Funghi"); 
+//			getUnaPizza(pizzaServiceInstance, "Funghi"); 
 //			
 //			getTuttePizze(pizzaServiceInstance); 
 //			
@@ -38,16 +42,11 @@ public class TestMenuPizzeria {
 			
 			
 		} catch (Throwable e) {
-			
 			e.printStackTrace();
-			
 		} finally {
-			
 			EntityManagerUtil.shutdown();
 		}
-		
 		System.out.println("Fine programma pizza. Spero che la pizza vi sia piaciuta! ");
-
 	}
 
 	static void getUnaPizza(PizzaService pizzaServiceInstance, String nomePizza) {
@@ -56,7 +55,9 @@ public class TestMenuPizzeria {
 
 		try {
 	        Pizza pizza = pizzaServiceInstance.get(nomePizza);
-	        System.out.println(pizza.toString());
+	        if (pizza != null) {
+	        	System.out.println(pizza.toString());
+	        }
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
@@ -74,33 +75,34 @@ public class TestMenuPizzeria {
 		
 	}
 	
-	static void insertPizza(PizzaService pizzaServiceInstance) throws Exception {
+	static void insertPizza(PizzaService pizzaServiceInstance, Set<Ingrediente> ingredienti) throws Exception {
 		
 		System.out.println("Lo chef vuole aggiungere una nuova pizza al menu"); 
 		
-		Set<Ingrediente> ingredienti = new HashSet<>();
-//	    ingredienti.add(new Ingrediente("Pomodoro", true));
-//	    ingredienti.add(new Ingrediente("Mozzarella", true));
-//	    ingredienti.add(new Ingrediente("Prosciutto Cotto", true));
-//	    ingredienti.add(new Ingrediente("Mango", true));
-	    
-		Pizza nuovaPizza = new Pizza (null, "Hawaiana", 9.00f, false, ingredienti); 
-//		pizzaServiceInstance.insert(nuovaPizza, ingredienti); 
+		Set<Ingrediente> ingredientiPizza = new HashSet<Ingrediente>(); 
+		
+//	    ingredienti.add(new Ingrediente(1, "Pomodoro", true));
+//	    ingredienti.add(new Ingrediente(2, "Mozzarella", true));
+//	    ingredienti.add(new Ingrediente(7, "Prosciutto Cotto", true));
+//	    ingredienti.add(new Ingrediente(null, "Mango", true));
+//	    
+//		Pizza nuovaPizza = new Pizza (null, "Hawaiana", 9.00f, false, ingredienti);
+//		pizzaServiceInstance.insert(nuovaPizza, ingredientiPizza); 
 	}
 	
 	static void updatePizza(PizzaService pizzaServiceInstance) throws Exception {
 		
 		System.out.println("Oops, abbiamo fatto un errore negli ingredienti dell'ultima pizza aggiunta"); 
 		
-//		Ingrediente ingredienteDaRimuovere = new Ingrediente("Mango", false);
-//	    Ingrediente ingredienteDaAggiungere = new Ingrediente("Ananas", true);
+		Ingrediente ingredienteDaRimuovere = new Ingrediente(null, "Mango", false);
+	    Ingrediente ingredienteDaAggiungere = new Ingrediente(null, "Ananas", true);
 	    
 		Pizza pizzaDaAggiornare = pizzaServiceInstance.get("Hawaiana"); 
 		
 		if (pizzaDaAggiornare != null) {
-//			pizzaDaAggiornare.getIngredienti().removeIf(ingrediente -> ingrediente.getNome().equalsIgnoreCase(ingredienteDaRimuovere.getNome()));
+			pizzaDaAggiornare.getIngredienti().removeIf(ingrediente -> ingrediente.getNome().equalsIgnoreCase(ingredienteDaRimuovere.getNome()));
 	        
-//	        pizzaDaAggiornare.getIngredienti().add(ingredienteDaAggiungere);
+	        pizzaDaAggiornare.getIngredienti().add(ingredienteDaAggiungere);
 
 	        pizzaServiceInstance.update(pizzaDaAggiornare);
 	    } else {

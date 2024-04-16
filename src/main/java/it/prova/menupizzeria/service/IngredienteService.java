@@ -19,8 +19,6 @@ public interface IngredienteService {
 	public void delete(Long id) throws Exception; 
 	
 	
-	public void setPizzaDAO(PizzaDAO pizzaDAO);
-
 	public void setIngredienteDAO(IngredienteDAO ingredienteDAO);
 	
 	public boolean updateDisponibilita(Ingrediente ingredienteInstance) throws Exception; 

@@ -12,10 +12,6 @@ public class IngredienteServiceImpl implements IngredienteService{
 
 	private IngredienteDAO ingredienteDAO; 
 	
-	@Override
-	public void setPizzaDAO(PizzaDAO pizzaDAO) { 
-		
-	}
 
 	@Override
 	public void setIngredienteDAO(IngredienteDAO ingredienteDAO) {
