@@ -16,7 +16,7 @@ public interface PizzaService {
 	
 	public void update(Pizza pizzaInstance) throws Exception; 
 	
-	public void insert(Pizza pizzaInstance, Set<Ingrediente> ingredienti) throws Exception; 
+	public void insert(Pizza pizzaInstance, Set<String> ingredienti) throws Exception; 
 	
 	public void delete(String nome) throws Exception; 
 	

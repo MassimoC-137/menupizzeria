@@ -10,7 +10,7 @@ public class Utils {
 	public static void stampaListaDiPizze(List<Pizza> pizze) {
 		
 		for (Pizza pizza:pizze) {
-			System.out.println(pizza.toString());
+			System.out.println(pizza.toStrings());
 		}
 	}
 	

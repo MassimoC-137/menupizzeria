@@ -84,8 +84,8 @@ public class TestMenuPizzeria {
 //	    ingredienti.add(new Ingrediente("Prosciutto Cotto", true));
 //	    ingredienti.add(new Ingrediente("Mango", true));
 	    
-		Pizza nuovaPizza = new Pizza (null, "Hawaiana", 9.00, false, ingredienti); 
-		pizzaServiceInstance.insert(nuovaPizza, ingredienti); 
+		Pizza nuovaPizza = new Pizza (null, "Hawaiana", 9.00f, false, ingredienti); 
+//		pizzaServiceInstance.insert(nuovaPizza, ingredienti); 
 	}
 	
 	static void updatePizza(PizzaService pizzaServiceInstance) throws Exception {

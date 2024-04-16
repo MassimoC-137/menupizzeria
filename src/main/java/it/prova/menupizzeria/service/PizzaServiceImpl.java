@@ -1,5 +1,6 @@
 package it.prova.menupizzeria.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -9,10 +10,13 @@ import it.prova.menupizzeria.dao.PizzaDAO;
 import it.prova.menupizzeria.model.Ingrediente;
 import it.prova.menupizzeria.model.Pizza;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.transaction.Transactional;
 
 public class PizzaServiceImpl implements PizzaService{
 
-	private PizzaDAO pizzaDAO; 
+	private PizzaDAO pizzaDAO;
+	private IngredienteDAO ingredienteDAO;
 
 	@Override
 	public void setPizzaDAO(PizzaDAO pizzaDAO) {
@@ -22,6 +26,7 @@ public class PizzaServiceImpl implements PizzaService{
 
 	@Override
 	public void setIngredienteDAO(IngredienteDAO ingredienteDAO) {
+		this.ingredienteDAO = ingredienteDAO;
 	}
 	
 	@Override
@@ -45,6 +50,9 @@ public class PizzaServiceImpl implements PizzaService{
 		try {
 			pizzaDAO.setEntityManager(entityManager);
 			return pizzaDAO.get(nome); 
+		}catch (NoResultException e){
+			System.out.println("Non esiste alcuna pizza con il nome : " + nome);
+			throw e;
 		} catch (Exception e){ 
 			e.printStackTrace();
 			throw e;
@@ -77,28 +85,32 @@ public class PizzaServiceImpl implements PizzaService{
 	
 
 	@Override
-	public void insert(Pizza pizzaInstance, Set<Ingrediente> ingredienti) throws Exception {
+	@Transactional
+	public void insert(Pizza pizzaInstance, Set<String> ingredienti) throws Exception {
 		EntityManager entityManager = EntityManagerUtil.getEntityManager();
 
 		try {
 			entityManager.getTransaction().begin();
 			
-	        pizzaInstance.setIngredienti(ingredienti);
-
 			pizzaDAO.setEntityManager(entityManager);
-
-			pizzaDAO.insert(pizzaInstance);
+			ingredienteDAO.setEntityManager(entityManager);
 			
-			for (Ingrediente ingrediente : ingredienti) {
-	            if (ingrediente.setId() == null || entityManager.find(Ingrediente.class, ingrediente.setId()) == null) {
-	                entityManager.persist(ingrediente);
+			Set<Ingrediente> ingred = new HashSet<Ingrediente>();
+			
+			for (String ingrediente : ingredienti) {
+				Ingrediente ing = ingredienteDAO.getByNome(ingrediente);
+	            if (ing == null) {
+	                ingredienteDAO.insert(new Ingrediente(null, ingrediente, true));
+	                ing = ingredienteDAO.getByNome(ingrediente);
 	            } else {
-	                ingrediente = entityManager.merge(ingrediente);
+	                ingredienteDAO.update(ing);
 	            }
+	            ingred.add(ing);
+	            
 	        }
-	        pizzaInstance.setIngredienti(ingredienti);
+	        pizzaInstance.setIngredienti(ingred);
 
-	        entityManager.persist(pizzaInstance);
+	        pizzaDAO.insert(pizzaInstance);
 
 			entityManager.getTransaction().commit();
 		} catch (Exception e) {

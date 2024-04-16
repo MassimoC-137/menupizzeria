@@ -142,8 +142,7 @@ public class IngredienteServiceImpl implements IngredienteService{
 
 	@Override
 	public Ingrediente cercaPerNome(String nomeIngrediente) {
-		// TODO Auto-generated method stub
-		return null;
+		return ingredienteDAO.getByNome(nomeIngrediente);
 	}
 
 	

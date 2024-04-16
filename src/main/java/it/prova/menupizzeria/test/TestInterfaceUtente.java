@@ -18,8 +18,8 @@ public interface TestInterfaceUtente {
 		boolean exit = false; 
 		
 		while(!exit) {
-			System.out.println("Benvenuto nella tua interfaccia utente! Scegli un'opzione: ");
-			System.out.println("1. Dammi tutte le pizza del menù. ");
+			System.out.println("\n\n Benvenuto nella tua interfaccia utente! Scegli un'opzione: ");
+			System.out.println("1. Dammi tutte le pizze del menù. ");
 			System.out.println("2. Dammi una pizza. "); 
 			System.out.println("3. Cambia disponibilità ingredienti. ");
 			System.out.println("4. Crea una nuova pizza. ");
@@ -36,6 +36,7 @@ public interface TestInterfaceUtente {
 			case 1: 
 				System.out.println("Ecco il menù delle pizze di oggi: "); 
 				TestMenuPizzeria.getTuttePizze(pizzaServiceInstance); 
+				break;
 				
 			case 2: 
 				System.out.println("Di quale pizza vuoi i dettagli? ");
@@ -43,7 +44,8 @@ public interface TestInterfaceUtente {
 				String nomePizza = scanner.next(); 
 				scanner.nextLine(); 
 				TestMenuPizzeria.getUnaPizza(pizzaServiceInstance, nomePizza);
-				
+				break;
+
 			case 3: 
 				System.out.println("Vuoi cambiare la disponibilità di un ingrediente. \nEcco la lista degli ingredienti"); 
 				TestMenuPizzeria.getTuttiIngredienti(ingredienteServiceInstance);
@@ -61,12 +63,12 @@ public interface TestInterfaceUtente {
 			    break;
 			    
 				case 4: 
-					System.out.println("Crea una nuova pizza! ");
-					System.out.println("Inserisci il nome della pizza: ");
+					System.out.println("Crea una nuova pizza!");
+					System.out.println("Inserisci il nome della pizza: \n");
 					String nome = scanner.nextLine(); 
-					System.out.println("Inserisci il prezzo della pizza: ");
-					double prezzo = scanner.nextDouble(); 
-					System.out.println("E' una pizza gourmet? Inserisci true o false: "); 
+					System.out.println("Inserisci il prezzo della pizza: \n");
+					float prezzo = scanner.nextFloat(); 
+					System.out.println("E' una pizza gourmet? Inserisci true o false: \n"); 
 					boolean gourmet = scanner.nextBoolean(); 
 					scanner.nextLine();
 					
@@ -78,19 +80,8 @@ public interface TestInterfaceUtente {
 					    input = scanner.nextLine();
 					}
 					
-					Set<Ingrediente> ingredientiPerLaPizza = new HashSet<>();
-					for (String nomeIngrediente : nomiIngredienti) {
-					    Ingrediente ingrediente = ingredienteServiceInstance.cercaPerNome(nomeIngrediente);
-					    if (ingrediente == null) {
-					        ingrediente = new Ingrediente();
-					        ingrediente.setNome(nomeIngrediente);
-					        ingrediente.setDisponibilita(true);
-					        ingredienteServiceInstance.insert(ingrediente);
-					    }
-					    ingredientiPerLaPizza.add(ingrediente);
-					}
-					Pizza nuovaPizza = new Pizza(pizzaServiceInstance, ingredientiPerLaPizza);
-				    pizzaServiceInstance.insert(nuovaPizza, ingredientiPerLaPizza);
+					Pizza nuovaPizza = new Pizza(null, nome, prezzo, gourmet, null);
+				    pizzaServiceInstance.insert(nuovaPizza, nomiIngredienti);
 				    System.out.println("Pizza creata con successo!");
 				    
 				    break; 
@@ -103,7 +94,7 @@ public interface TestInterfaceUtente {
 				    scanner.nextLine();
 
 				    System.out.println("Inserisci il prezzo della pizza da aggiornare:");
-				    double prezzoP = scanner.nextDouble();
+				    float prezzoP = scanner.nextFloat();
 				    scanner.nextLine();
 
 				    System.out.println("Inserisci il nome della pizza da aggiornare:");

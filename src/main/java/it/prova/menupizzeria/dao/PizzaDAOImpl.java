@@ -20,20 +20,21 @@ public class PizzaDAOImpl implements PizzaDAO{
 	
 	@Override
 	public List<Pizza> getAll() throws Exception {
-		return entityManager.createQuery("from Pizza",Pizza.class).getResultList();
+		return entityManager.createQuery("from Pizza p left join fetch p.ingredienti",Pizza.class).getResultList();
 	}
 
 	@Override
 	public Pizza get(String nome) throws Exception {
-		return entityManager.find(Pizza.class, nome);
+		return entityManager.createQuery("from Pizza p left join fetch p.ingredienti where p.nome = '" + nome + "'", Pizza.class).getSingleResult();
+		//return entityManager.find(Pizza.class, nome);
 	}
 
 	@Override
-	public void update(Pizza pizzaInstance) throws Exception {
+	public Pizza update(Pizza pizzaInstance) throws Exception {
 		if (pizzaInstance == null) {
 			throw new Exception("Problema valore in input");
 		}
-		pizzaInstance = entityManager.merge(pizzaInstance);
+		return entityManager.merge(pizzaInstance);
 	}
 
 	@Override

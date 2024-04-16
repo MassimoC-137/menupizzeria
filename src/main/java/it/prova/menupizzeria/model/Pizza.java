@@ -27,34 +27,32 @@ public class Pizza {
 	@Column(name = "nome")
 	private String nome;
 	@Column(name = "prezzo")
-	private double prezzo; 
+	private float prezzo; 
 	@Column(name = "gourmet")
 	private boolean gourmet; 
 	
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name="ingredienti_pizza", joinColumns = @JoinColumn(name = "id_pizza", referencedColumnName = "id"),
 			inverseJoinColumns = @JoinColumn(name = "id_ingrediente", referencedColumnName = "id"))
 			
 	private Set<Ingrediente> ingredienti = new HashSet<>(0);
 	
-
-	public Pizza(Long idp) {
+	
+	public Pizza () {
 		
 	}
+
+	public Pizza(Long idp) {
+		this.setId(idp);
+	}
 	
-	public Pizza(Long id, String nome, double prezzo, boolean gourmet, Set<Ingrediente> ingredienti) {
+	public Pizza(Long id, String nome, float prezzo, boolean gourmet, Set<Ingrediente> ingredienti) {
 		this.setId(id);
 		this.setNome(nome); 
 		this.setPrezzo(prezzo); 
 		this.setGourmet(gourmet);
 		this.setIngredienti(ingredienti); 
-	}
-	
-	
-
-	public Pizza(PizzaService pizzaServiceInstance, Set<Ingrediente> ingredientiPerLaPizza) {
-
 	}
 
 	public void setId(Long id) {
@@ -69,11 +67,11 @@ public class Pizza {
 		this.nome = nome;
 	}
 
-	public double getPrezzo() {
+	public float getPrezzo() {
 		return prezzo;
 	}
 
-	public void setPrezzo(double prezzo) {
+	public void setPrezzo(float prezzo) {
 		this.prezzo = prezzo;
 	}
 

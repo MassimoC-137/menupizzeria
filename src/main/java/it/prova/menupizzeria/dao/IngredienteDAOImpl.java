@@ -4,6 +4,7 @@ import java.util.List;
 
 import it.prova.menupizzeria.model.Ingrediente;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 
 public class IngredienteDAOImpl implements IngredienteDAO{
 
@@ -22,13 +23,22 @@ public class IngredienteDAOImpl implements IngredienteDAO{
 	public Ingrediente get(Long id) throws Exception {
 		return entityManager.find(Ingrediente.class, id);
 	}
+	
+	@Override
+	public Ingrediente getByNome(String nome) {
+		try {
+			return entityManager.createQuery("from Ingrediente i where i.nome = '" + nome + "'",Ingrediente.class).getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
 
 	@Override
-	public void update(Ingrediente ingredienteInstance) throws Exception {
+	public Ingrediente update(Ingrediente ingredienteInstance) throws Exception {
 		if (ingredienteInstance == null) {
 			throw new Exception("Problema valore in input");
 		}
-		ingredienteInstance = entityManager.merge(ingredienteInstance);
+		return entityManager.merge(ingredienteInstance);
 	}
 
 	@Override

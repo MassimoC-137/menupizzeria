@@ -31,6 +31,10 @@ public class Ingrediente {
 		this.setDisponibilita(disponibilita);
 	}
 
+	public Long getId() {
+		return id;
+	}
+	
 	public void setId(Long id) {
 		
 	}
@@ -52,12 +56,7 @@ public class Ingrediente {
 
 	@Override
 	public String toString() {
-		return "L'ingrediente " + nome + " è oggi disponibile? " + disponibilita;
-	}
-
-	public Object setId() {
-		// TODO Auto-generated method stub
-		return null;
+		return "L'ingrediente " + nome + " numero " + id +  " è oggi disponibile? " + disponibilita;
 	}
 	
 	

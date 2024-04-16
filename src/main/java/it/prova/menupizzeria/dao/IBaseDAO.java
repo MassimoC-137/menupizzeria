@@ -10,7 +10,7 @@ public interface IBaseDAO<T> {
 
     public   T   get(Long id) throws Exception;
 
-    public void update(T input) throws Exception;
+    public T update(T input) throws Exception;
 
     public void insert(T input) throws Exception;
 
