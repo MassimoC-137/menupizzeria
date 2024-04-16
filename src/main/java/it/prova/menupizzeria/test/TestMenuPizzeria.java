@@ -1,17 +1,13 @@
 package it.prova.menupizzeria.test;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import it.prova.menupizzeria.dao.EntityManagerUtil;
-import it.prova.menupizzeria.dao.IngredienteDAO;
-import it.prova.menupizzeria.dao.IngredienteDAOImpl;
 import it.prova.menupizzeria.model.Ingrediente;
 import it.prova.menupizzeria.model.Pizza;
 import it.prova.menupizzeria.service.IngredienteService;
-import it.prova.menupizzeria.service.IngredienteServiceImpl;
 import it.prova.menupizzeria.service.MyServiceFactory;
 import it.prova.menupizzeria.service.PizzaService;
 import it.prova.menupizzeria.utils.Utils;
@@ -104,7 +100,7 @@ public class TestMenuPizzeria {
 	        
 	        pizzaDaAggiornare.getIngredienti().add(ingredienteDaAggiungere);
 
-	        pizzaServiceInstance.update(pizzaDaAggiornare);
+	        pizzaServiceInstance.update(pizzaDaAggiornare, null);
 	    } else {
 	        System.out.println("Pizza non trovata con il nome fornito.");
 	    }

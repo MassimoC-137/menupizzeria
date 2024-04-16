@@ -13,22 +13,22 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
 
-public class PizzaServiceImpl implements PizzaService{
+public class PizzaServiceImpl implements PizzaService {
 
 	private PizzaDAO pizzaDAO;
 	private IngredienteDAO ingredienteDAO;
 
 	@Override
 	public void setPizzaDAO(PizzaDAO pizzaDAO) {
-		this.pizzaDAO = pizzaDAO; 
-		
+		this.pizzaDAO = pizzaDAO;
+
 	}
 
 	@Override
 	public void setIngredienteDAO(IngredienteDAO ingredienteDAO) {
 		this.ingredienteDAO = ingredienteDAO;
 	}
-	
+
 	@Override
 	public List<Pizza> getAll() throws Exception {
 		EntityManager entityManager = EntityManagerUtil.getEntityManager();
@@ -37,7 +37,7 @@ public class PizzaServiceImpl implements PizzaService{
 			return pizzaDAO.getAll();
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw e; 
+			throw e;
 		} finally {
 			EntityManagerUtil.closeEntityManager(entityManager);
 		}
@@ -45,31 +45,41 @@ public class PizzaServiceImpl implements PizzaService{
 
 	@Override
 	public Pizza get(String nome) throws Exception {
-		EntityManager entityManager = EntityManagerUtil.getEntityManager(); 
-		
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
 		try {
 			pizzaDAO.setEntityManager(entityManager);
-			return pizzaDAO.get(nome); 
-		}catch (NoResultException e){
+			return pizzaDAO.getByName(nome);
+		} catch (NoResultException e) {
 			System.out.println("Non esiste alcuna pizza con il nome : " + nome);
-			throw e;
-		} catch (Exception e){ 
+			throw null;
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
-		}finally {
+		} finally {
 			EntityManagerUtil.closeEntityManager(entityManager);
 		}
 	}
 
 	@Override
-	public void update(Pizza pizzaInstance) throws Exception {
+	public void update(Pizza pizzaInstance, Set<String> ingredienti) throws Exception {
 		EntityManager entityManager = EntityManagerUtil.getEntityManager();
 		
 		try {
 			entityManager.getTransaction().begin();
 			
 			pizzaDAO.setEntityManager(entityManager); 
+			ingredienteDAO.setEntityManager(entityManager);
 			
+			Set<Ingrediente> ingred = new HashSet<>();
+			
+			for (String ingrediente : ingredienti) {
+				Ingrediente ing = ingredienteDAO.getByNome(ingrediente);
+	            if (ing == null) {
+	                ingredienteDAO.insert(new Ingrediente(null, ingrediente, true));
+	            }
+	            ingred.add(ing); 
+			}
 			pizzaDAO.update(pizzaInstance); 
 			
 			entityManager.getTransaction().commit();
@@ -82,7 +92,6 @@ public class PizzaServiceImpl implements PizzaService{
 		}
 		
 	}
-	
 
 	@Override
 	@Transactional
@@ -91,26 +100,26 @@ public class PizzaServiceImpl implements PizzaService{
 
 		try {
 			entityManager.getTransaction().begin();
-			
+
 			pizzaDAO.setEntityManager(entityManager);
 			ingredienteDAO.setEntityManager(entityManager);
-			
+
 			Set<Ingrediente> ingred = new HashSet<Ingrediente>();
-			
+
 			for (String ingrediente : ingredienti) {
 				Ingrediente ing = ingredienteDAO.getByNome(ingrediente);
-	            if (ing == null) {
-	                ingredienteDAO.insert(new Ingrediente(null, ingrediente, true));
-	                ing = ingredienteDAO.getByNome(ingrediente);
-	            } else {
-	                ingredienteDAO.update(ing);
-	            }
-	            ingred.add(ing);
-	            
-	        }
-	        pizzaInstance.setIngredienti(ingred);
+				if (ing == null) {
+					ingredienteDAO.insert(new Ingrediente(null, ingrediente, true));
+					ing = ingredienteDAO.getByNome(ingrediente);
+				} else {
+					ingredienteDAO.update(ing);
+				}
+				ingred.add(ing);
 
-	        pizzaDAO.insert(pizzaInstance);
+			}
+			pizzaInstance.setIngredienti(ingred);
+
+			pizzaDAO.insert(pizzaInstance);
 
 			entityManager.getTransaction().commit();
 		} catch (Exception e) {
@@ -120,7 +129,7 @@ public class PizzaServiceImpl implements PizzaService{
 		} finally {
 			EntityManagerUtil.closeEntityManager(entityManager);
 		}
-		
+
 	}
 
 	@Override
@@ -132,7 +141,7 @@ public class PizzaServiceImpl implements PizzaService{
 
 			pizzaDAO.setEntityManager(entityManager);
 
-			pizzaDAO.delete(pizzaDAO.get(nome));
+			pizzaDAO.delete(pizzaDAO.getByName(nome));
 
 			entityManager.getTransaction().commit();
 		} catch (Exception e) {
@@ -142,7 +151,7 @@ public class PizzaServiceImpl implements PizzaService{
 		} finally {
 			EntityManagerUtil.closeEntityManager(entityManager);
 		}
-		
+
 	}
 
 	@Override
@@ -160,8 +169,7 @@ public class PizzaServiceImpl implements PizzaService{
 		} finally {
 			EntityManagerUtil.closeEntityManager(entityManager);
 		}
-		
+
 	}
-	
 
 }

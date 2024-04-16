@@ -56,7 +56,8 @@ public class Pizza {
 	}
 
 	public void setId(Long id) {
-		
+		this.id = id;
+
 	}
 
 	public String getNome() {

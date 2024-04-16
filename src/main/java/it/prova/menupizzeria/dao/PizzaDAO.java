@@ -10,6 +10,6 @@ public interface PizzaDAO extends IBaseDAO<Pizza>{
 	
 	public List<Pizza> cercaPerIngrediente(Set<Ingrediente> ingredienti); 
 	
-	public Pizza get(String nome) throws Exception;
+	public Pizza getByName(String nome) throws Exception;
 	
 }

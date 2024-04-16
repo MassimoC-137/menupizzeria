@@ -138,7 +138,14 @@ public class IngredienteServiceImpl implements IngredienteService{
 
 	@Override
 	public Ingrediente cercaPerNome(String nomeIngrediente) {
-		return ingredienteDAO.getByNome(nomeIngrediente);
+		EntityManager entityManager = EntityManagerUtil.getEntityManager(); 
+		try {
+			this.ingredienteDAO.setEntityManager(entityManager);
+			return ingredienteDAO.getByNome(nomeIngrediente);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null; 
+		}
 	}
 
 	

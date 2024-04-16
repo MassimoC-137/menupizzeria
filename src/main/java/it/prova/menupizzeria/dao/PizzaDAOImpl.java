@@ -24,9 +24,8 @@ public class PizzaDAOImpl implements PizzaDAO{
 	}
 
 	@Override
-	public Pizza get(String nome) throws Exception {
+	public Pizza getByName(String nome) throws Exception {
 		return entityManager.createQuery("from Pizza p left join fetch p.ingredienti where p.nome = '" + nome + "'", Pizza.class).getSingleResult();
-		//return entityManager.find(Pizza.class, nome);
 	}
 
 	@Override

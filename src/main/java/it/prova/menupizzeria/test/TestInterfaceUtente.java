@@ -26,7 +26,13 @@ public interface TestInterfaceUtente {
 			System.out.println("5. Aggiorna una pizza già esistente. ");
 			System.out.println("6. Elimina una pizza dal menu. "); 
 			
-			int choice = scanner.nextInt(); 
+			int choice; 
+			try {
+				choice = scanner.nextInt(); 
+			} catch (Exception e) {
+				choice = 0;
+			}
+			
 			scanner.useDelimiter("\n");
 			scanner.nextLine(); 
 			
@@ -51,7 +57,15 @@ public interface TestInterfaceUtente {
 				System.out.println("Vuoi cambiare la disponibilità di un ingrediente. \nEcco la lista degli ingredienti"); 
 				TestMenuPizzeria.getTuttiIngredienti(ingredienteServiceInstance);
 				System.out.println("Inserisci l'ID dell'ingrediente per modificare la disponibilità. ");
-				Long idIngrediente = scanner.nextLong();
+				Long idIngrediente = 0l;
+				try {
+					idIngrediente = scanner.nextLong();
+
+				} catch (Exception e) {
+					System.out.println("ID inserito non valido. ");
+					scanner.nextLine();
+					break;
+				}
 			    scanner.nextLine(); 
 			    Ingrediente ingredienteDaModificare = ingredienteServiceInstance.get(idIngrediente);
 			    if (ingredienteDaModificare != null) {
@@ -105,23 +119,16 @@ public interface TestInterfaceUtente {
 				    boolean gourmetP = scanner.nextBoolean();
 				    scanner.nextLine();
 
-				    Set<Ingrediente> ingredientiP = new HashSet<>();
+				    Set<String> ingredientiP = new HashSet<>();
 				    System.out.println("Inserisci gli ingredienti (digita 'fine' per terminare):");
 				    String inputIngrediente = scanner.nextLine();
 				    while(!inputIngrediente.equalsIgnoreCase("fine")) {
-				        Ingrediente ingrediente = ingredienteServiceInstance.cercaPerNome(inputIngrediente);
-				        if (ingrediente == null) {
-				            ingrediente = new Ingrediente();
-				            ingrediente.setNome(inputIngrediente);
-				            ingrediente.setDisponibilita(true);  
-				            ingredienteServiceInstance.insert(ingrediente);
-				        }
-				        ingredientiP.add(ingrediente);
+				        ingredientiP.add(inputIngrediente);
 				        inputIngrediente = scanner.nextLine();
 				    }
 
-				    Pizza pizzaP = new Pizza(idP, nomeP, prezzoP, gourmetP, ingredientiP);
-				    pizzaServiceInstance.update(pizzaP);
+				    Pizza pizzaP = new Pizza(idP, nomeP, prezzoP, gourmetP, null);
+				    pizzaServiceInstance.update(pizzaP, ingredientiP);
 
 				    System.out.println("Pizza aggiornata con successo!");
 				    break;
@@ -136,6 +143,9 @@ public interface TestInterfaceUtente {
 					TestMenuPizzeria.deletePizza(pizzaServiceInstance);
 
 					break;
+					
+				default:
+					System.out.println("Comando non valido. ");
 			}
 		}
 		System.out.println("Grazie per aver usato l'interfaccia utente. Arrivederci!");
