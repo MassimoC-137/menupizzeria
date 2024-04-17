@@ -21,9 +21,5 @@ public class Utils {
 		}
 	}
 	
-	public static void togliPizzeDalMenuSeIngredienteMancante(List<Pizza> pizze, Ingrediente ingrediente) {
-	    pizze.removeIf(pizza -> !pizza.getIngredienti().contains(ingrediente));
-	}
-	
-	
+
 }

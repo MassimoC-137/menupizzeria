@@ -22,6 +22,7 @@ public interface PizzaService {
 	
 	public List<Pizza> cercaPerIngrediente(Set <Ingrediente> ingredienti) throws Exception; 
 	
+	public void togliPizzeDalMenuSeIngredienteMancante(List<Pizza> pizze, Ingrediente ingrediente) throws Exception;  
 	
 	
 	public void setPizzaDAO(PizzaDAO pizzaDAO);

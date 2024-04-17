@@ -42,7 +42,7 @@ public interface TestInterfaceUtente {
 			switch (choice) {
 			case 1:
 				System.out.println("Ecco il menù delle pizze di oggi: ");
-				TestMenuPizzeria.getTuttePizze(pizzaServiceInstance);
+				pizzaServiceInstance.getAll();
 				break;
 
 			case 2:
@@ -50,13 +50,13 @@ public interface TestInterfaceUtente {
 				System.out.println("Inserisci il nome: ");
 				String nomePizza = scanner.next();
 				scanner.nextLine();
-				TestMenuPizzeria.getUnaPizza(pizzaServiceInstance, nomePizza);
+				pizzaServiceInstance.get(nomePizza);
 				break;
 
 			case 3:
 				System.out
 						.println("Vuoi cambiare la disponibilità di un ingrediente. \nEcco la lista degli ingredienti");
-				TestMenuPizzeria.getTuttiIngredienti(ingredienteServiceInstance);
+				ingredienteServiceInstance.getAll();
 				System.out.println("Inserisci l'ID dell'ingrediente per modificare la disponibilità. ");
 				Long idIngrediente = 0l;
 				try {

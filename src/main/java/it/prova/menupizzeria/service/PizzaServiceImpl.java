@@ -9,6 +9,7 @@ import it.prova.menupizzeria.dao.IngredienteDAO;
 import it.prova.menupizzeria.dao.PizzaDAO;
 import it.prova.menupizzeria.model.Ingrediente;
 import it.prova.menupizzeria.model.Pizza;
+import it.prova.menupizzeria.utils.Utils;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
@@ -27,7 +28,7 @@ public class PizzaServiceImpl implements PizzaService {
 	public void setIngredienteDAO(IngredienteDAO ingredienteDAO) {
 		this.ingredienteDAO = ingredienteDAO;
 	}
-
+	
 	@Override
 	public List<Pizza> getAll() throws Exception {
 		EntityManager entityManager = EntityManagerUtil.getEntityManager();
@@ -172,5 +173,12 @@ public class PizzaServiceImpl implements PizzaService {
 		}
 
 	}
+	
+	@Override
+	public void togliPizzeDalMenuSeIngredienteMancante(List<Pizza> pizze, Ingrediente ingrediente) throws Exception {
+	    pizze.removeIf(pizza -> !pizza.getIngredienti().contains(ingrediente));
+	}
+	
+	
 
 }
