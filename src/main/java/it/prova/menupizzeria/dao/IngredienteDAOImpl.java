@@ -16,7 +16,7 @@ public class IngredienteDAOImpl implements IngredienteDAO{
 	
 	@Override
 	public List<Ingrediente> getAll() throws Exception {
-		return entityManager.createQuery("from Ingrediente",Ingrediente.class).getResultList();
+		return entityManager.createQuery("SELECT i FROM Ingrediente i",Ingrediente.class).getResultList();
 	}
 
 	@Override

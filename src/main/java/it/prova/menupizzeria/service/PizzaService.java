@@ -29,5 +29,6 @@ public interface PizzaService {
 
 	public void setIngredienteDAO(IngredienteDAO ingredienteDAO);
 
+
 	
 }

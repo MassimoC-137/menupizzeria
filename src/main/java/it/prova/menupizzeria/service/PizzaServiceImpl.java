@@ -31,17 +31,25 @@ public class PizzaServiceImpl implements PizzaService {
 	
 	@Override
 	public List<Pizza> getAll() throws Exception {
-		EntityManager entityManager = EntityManagerUtil.getEntityManager();
-		try {
-			pizzaDAO.setEntityManager(entityManager);
-			return pizzaDAO.getAll();
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		} finally {
-			EntityManagerUtil.closeEntityManager(entityManager);
-		}
+	    EntityManager entityManager = EntityManagerUtil.getEntityManager();
+	    
+	    try {
+	        pizzaDAO.setEntityManager(entityManager);
+	        
+	        List<Pizza> menu = pizzaDAO.getAll(); 
+	        return menu;
+	    } catch (NoResultException e) {
+	        System.out.println("Errore nella visualizzazione del menù: nessun risultato trovato.");
+	        throw e;
+	    } catch (Exception e) {
+	        System.out.println("Errore nella visualizzazione del menù.");
+	        e.printStackTrace();
+	        throw e;
+	    } finally {
+	        EntityManagerUtil.closeEntityManager(entityManager);
+	    }
 	}
+
 
 	@Override
 	public Pizza get(String nome) throws Exception {
@@ -138,11 +146,8 @@ public class PizzaServiceImpl implements PizzaService {
 
 		try {
 			entityManager.getTransaction().begin();
-
 			pizzaDAO.setEntityManager(entityManager);
-
 			pizzaDAO.delete(pizzaDAO.get(id));
-
 			entityManager.getTransaction().commit();
 		} catch (NoResultException e) {
 			System.out.println("Non esiste alcuna pizza con ID : " + id);
@@ -162,9 +167,7 @@ public class PizzaServiceImpl implements PizzaService {
 
 		try {
 			pizzaDAO.setEntityManager(entityManager);
-
 			return pizzaDAO.cercaPerIngrediente(ingredienti);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

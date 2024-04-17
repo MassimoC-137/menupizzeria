@@ -94,12 +94,12 @@ public class Pizza {
 
 	
 	public String toStrings() {
-		return "La pizza " + nome + " è la numero " + id + " e costa " + prezzo;
+		return "La pizza " + nome + " è la numero " + id + " e costa " + prezzo + "€. ";
 	}
 	
 	@Override
 	public String toString() {
-		return "La pizza " + nome + " è la numero " + id + " e costa " + prezzo + " ed i suoi ingredienti sono: " + ingredienti;
+		return "La pizza " + nome + " è la numero " + id + " e costa " + prezzo + "€. I suoi ingredienti sono: " + ingredienti;
 	}
 	
 	

@@ -1,6 +1,7 @@
 package it.prova.menupizzeria.test;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -42,20 +43,39 @@ public interface TestInterfaceUtente {
 			switch (choice) {
 			case 1:
 				System.out.println("Ecco il menù delle pizze di oggi: ");
-				pizzaServiceInstance.getAll();
+				List<Pizza> tutteLePizze;
+				try {
+					tutteLePizze = pizzaServiceInstance.getAll();
+					if (tutteLePizze.isEmpty()) {
+						System.out.println("Non ci sono pizze sul menù. ");
+					} else {
+						for (Pizza pizza : tutteLePizze) {
+							System.out.println(pizza.toStrings());
+						}
+					}
+				} catch (Exception e) {
+					System.out.println("Errore durante il caricamento del menù delle pizze. ");
+				}
 				break;
 
 			case 2:
-				System.out.println("Di quale pizza vuoi i dettagli? ");
-				System.out.println("Inserisci il nome: ");
-				String nomePizza = scanner.next();
-				scanner.nextLine();
-				pizzaServiceInstance.get(nomePizza);
-				break;
+			    System.out.println("Di quale pizza vuoi i dettagli? ");
+			    System.out.println("Inserisci il nome: ");
+			    String nomePizza = scanner.nextLine();
 
+			    try {
+			        Pizza pizza = pizzaServiceInstance.get(nomePizza);
+			        if (pizza != null) {
+			            System.out.println(pizza);
+			        } else {
+			            System.out.println("Non è stata trovata alcuna pizza con il nome: " + nomePizza);
+			        }
+			    } catch (Exception e) {
+			        System.out.println("Non è possibile trovare una pizza con il nome: " + nomePizza);
+			    }
+			    break;
 			case 3:
-				System.out
-						.println("Vuoi cambiare la disponibilità di un ingrediente. \nEcco la lista degli ingredienti");
+				System.out.println("Vuoi cambiare la disponibilità di un ingrediente. \nEcco la lista degli ingredienti");
 				ingredienteServiceInstance.getAll();
 				System.out.println("Inserisci l'ID dell'ingrediente per modificare la disponibilità. ");
 				Long idIngrediente = 0l;
