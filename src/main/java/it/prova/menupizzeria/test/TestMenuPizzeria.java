@@ -114,7 +114,7 @@ public class TestMenuPizzeria {
 		
 		if (pizzaDaEliminare != null) {
 			try {
-				pizzaServiceInstance.delete("Hawaiana");
+				pizzaServiceInstance.delete(30l);
 	            System.out.println("Pizza eliminata con successo.");
 	        } catch (Exception e) {
 	            System.out.println("Errore durante l'eliminazione della pizza.");

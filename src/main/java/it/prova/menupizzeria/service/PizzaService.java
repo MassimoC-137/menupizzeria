@@ -18,7 +18,7 @@ public interface PizzaService {
 	
 	public void insert(Pizza pizzaInstance, Set<String> ingredienti) throws Exception; 
 	
-	public void delete(String nome) throws Exception; 
+	public void delete(Long id) throws Exception; 
 	
 	public List<Pizza> cercaPerIngrediente(Set <Ingrediente> ingredienti) throws Exception; 
 	

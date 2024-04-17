@@ -21,7 +21,6 @@ public class PizzaServiceImpl implements PizzaService {
 	@Override
 	public void setPizzaDAO(PizzaDAO pizzaDAO) {
 		this.pizzaDAO = pizzaDAO;
-
 	}
 
 	@Override
@@ -52,7 +51,7 @@ public class PizzaServiceImpl implements PizzaService {
 			return pizzaDAO.getByName(nome);
 		} catch (NoResultException e) {
 			System.out.println("Non esiste alcuna pizza con il nome : " + nome);
-			throw null;
+			throw e;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
@@ -133,7 +132,7 @@ public class PizzaServiceImpl implements PizzaService {
 	}
 
 	@Override
-	public void delete(String nome) throws Exception {
+	public void delete(Long id) throws Exception {
 		EntityManager entityManager = EntityManagerUtil.getEntityManager();
 
 		try {
@@ -141,19 +140,21 @@ public class PizzaServiceImpl implements PizzaService {
 
 			pizzaDAO.setEntityManager(entityManager);
 
-			pizzaDAO.delete(pizzaDAO.getByName(nome));
+			pizzaDAO.delete(pizzaDAO.get(id));
 
 			entityManager.getTransaction().commit();
-		} catch (Exception e) {
+		} catch (NoResultException e) {
+			System.out.println("Non esiste alcuna pizza con ID : " + id);
 			entityManager.getTransaction().rollback();
-			e.printStackTrace();
 			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			EntityManagerUtil.closeEntityManager(entityManager);
 		}
 
 	}
-
+	
 	@Override
 	public List<Pizza> cercaPerIngrediente(Set<Ingrediente> ingredienti) throws Exception {
 		EntityManager entityManager = EntityManagerUtil.getEntityManager();
