@@ -76,7 +76,19 @@ public interface TestInterfaceUtente {
 			    break;
 			case 3:
 				System.out.println("Vuoi cambiare la disponibilità di un ingrediente. \nEcco la lista degli ingredienti");
-				ingredienteServiceInstance.getAll();
+				try {
+			        List<Ingrediente> tuttiIngredienti = ingredienteServiceInstance.getAll();
+			        if (tuttiIngredienti.isEmpty()) {
+			            System.out.println("Non ci sono ingredienti disponibili.");
+			        } else {
+			            for (Ingrediente ingrediente : tuttiIngredienti) {
+			                System.out.println("ID: " + ingrediente.getId() + ", Nome: " + ingrediente.getNome() + ", Disponibilità: " + (ingrediente.isDisponibilita() ? "Disponibile" : "Non Disponibile"));
+			            }
+			        }
+			    } catch (Exception e) {
+			        System.out.println("Errore nel recupero degli ingredienti: " + e.getMessage());
+			        e.printStackTrace();
+			    }				
 				System.out.println("Inserisci l'ID dell'ingrediente per modificare la disponibilità. ");
 				Long idIngrediente = 0l;
 				try {
